@@ -238,7 +238,7 @@ class GeometryCalculationRequest(BaseModel):
     include_steps: bool = Field(default=False, description="Bao gồm các bước tính toán")
     
     class Config:
-        schema_extra = {
+        json_schema_extra = {
             "examples": {
                 "point_distance_3d": {
                     "summary": "Khoảng cách 2 điểm 3D",
@@ -292,7 +292,7 @@ class GeometryCalculationResponse(BaseModel):
     metadata: Optional[Dict[str, Any]] = Field(default=None, description="Thông tin bổ sung")
     
     class Config:
-        schema_extra = {
+        json_schema_extra = {
             "example": {
                 "success": True,
                 "operation": "Khoảng cách",
