@@ -1,189 +1,339 @@
-# Geometry Calculator API
+# ConvertKeylogApp Geometry API
 
-🔧 **API chuyển đổi từ Desktop Geometry Mode thành Web Service**
+🧮 **REST API cho chức năng hình học từ ConvertKeylogApp** - Chuyển đổi các bài toán hình học thành keylog tương thích với máy tính Casio.
 
-API này cung cấp đầy đủ chức năng của **Geometry Mode** từ desktop application, được thiết kế để tích hợp vào các ứng dụng web hiện đại.
+## Tổng quan
 
-## ✨ Tính năng chính
+API này cung cấp các endpoint RESTful để xử lý các phép tính hình học và tạo keylog cho máy tính Casio, được chuyển đổi từ chức năng Geometry Mode của ConvertKeylogApp desktop.
 
-### 🧮 Tính toán hình học
-- **Khoảng cách**: Giữa điểm-điểm, điểm-đường thẳng, điểm-mặt phẳng
-- **Tương giao**: Đường thẳng-đường thẳng, đường thẳng-mặt phẳng  
-- **Diện tích**: Đường tròn, hình phẳng
-- **Thể tích**: Mặt cầu, khối 3D
-- **Phương trình đường thẳng**: Qua 2 điểm, vuông góc mặt phẳng
+### Tính năng chính
 
-### 📊 Xử lý Excel Batch
-- Upload và xử lý file Excel (hỗ trợ đến 250k+ rows)
-- Anti-crash system với memory monitoring
-- Tạo template Excel theo cấu hình hình học
-- Download kết quả đã mã hóa
-- Background processing cho file lớn
+- ✅ **5 hình học cơ bản**: Điểm, Đường thẳng, Mặt phẳng, Đường tròn, Mặt cầu
+- ✅ **5 phép toán**: Tương giao, Khoảng cách, Diện tích, Thể tích, PT đường thẳng
+- ✅ **Hỗ trợ đa phiên bản máy tính**: fx799, fx800, fx801, fx802, fx803
+- ✅ **LaTeX encoding**: Chuyển đổi biểu thức toán học sang keylog
+- ✅ **Batch processing**: Xử lý nhiều tính toán cùng lúc
+- ✅ **Input validation**: Kiểm tra dữ liệu đầu vào
+- ✅ **CORS enabled**: Hỗ trợ tích hợp web frontend
 
-### 🎯 Mã hóa Keylog Casio
-- Sinh keylog cho máy tính Casio (fx799, fx991, fx570, fx880, fx801)
-- Encoding tối ưu theo từng phiên bản máy
-- Format tương thích trực tiếp với máy tính
+## Cài đặt và chạy
 
-### 🚀 Performance & Scalability
-- Async processing với FastAPI
-- Background tasks cho heavy operations
-- Memory monitoring và optimization
-- REST API chuẩn với OpenAPI documentation
-- Docker support cho easy deployment
-
-## 🛠️ Tech Stack
-
-- **Framework**: FastAPI + Uvicorn
-- **Data Processing**: Pandas + NumPy + OpenPyXL
-- **Validation**: Pydantic
-- **System Monitoring**: psutil
-- **Deployment**: Docker + Docker Compose
-
-## 📖 Quick Start
-
-### Local Development
-
+### 1. Clone repository
 ```bash
-# 1. Clone repository
-git clone https://github.com/singed2905/api.git
-cd api
-
-# 2. Setup environment
-chmod +x setup.sh
-./setup.sh
-
-# 3. Activate virtual environment
-source venv/bin/activate  # Linux/Mac
-# hoặc venv\Scripts\activate  # Windows
-
-# 4. Run API
-./run.sh
-# hoặc uvicorn app.main:app --reload
+git clone https://github.com/singed2905/apiTL.git
+cd apiTL
 ```
 
-### Docker Deployment
-
+### 2. Cài đặt dependencies
 ```bash
-# Build và chạy
-docker-compose up --build
-
-# API sẽ available tại http://localhost:8000
+pip install -r requirements.txt
 ```
 
-## 📚 API Documentation
-
-- **Interactive Docs**: http://localhost:8000/docs
-- **ReDoc**: http://localhost:8000/redoc
-- **OpenAPI Schema**: http://localhost:8000/openapi.json
-- **Health Check**: http://localhost:8000/health
-
-## 🔗 Main Endpoints
-
-| Endpoint | Method | Description |
-|----------|--------|--------------|
-| `/api/v1/geometry/calculate` | POST | Tính toán hình học |
-| `/api/v1/geometry/shapes` | GET | Danh sách hình học |
-| `/api/v1/geometry/examples` | GET | Ví dụ requests |
-| `/api/v1/excel/process` | POST | Xử lý Excel batch |
-| `/api/v1/excel/template` | POST | Tạo Excel template |
-| `/health` | GET | Health check |
-
-## 📋 Project Structure
-
-```
-api/
-├── app/                    # Main application
-│   ├── models/            # Pydantic models
-│   ├── routers/           # API endpoints
-│   ├── services/          # Business logic
-│   └── utils/             # Utilities
-├── config/                # Configuration files
-├── uploads/               # Temporary uploads
-├── outputs/               # Generated files
-├── tests/                 # Test files
-├── docs/                  # Documentation
-├── scripts/               # Setup/deployment scripts
-├── docker-compose.yml     # Docker services
-├── Dockerfile            # Container definition
-└── requirements.txt      # Python dependencies
-```
-
-## 🧪 Testing
-
+### 3. Chạy API
 ```bash
-# Run tests
-python test_api.py
+python app.py
+```
 
-# Test specific endpoint
-curl -X POST "http://localhost:8000/api/v1/geometry/calculate" \
--H "Content-Type: application/json" \
--d '{
+API sẽ chạy tại: `http://localhost:5000`
+
+### 4. Kiểm tra API
+```bash
+curl http://localhost:5000
+```
+
+## API Endpoints
+
+### 🏠 Health Check
+```
+GET /
+```
+Kiểm tra trạng thái API và xem danh sách endpoints có sẵn.
+
+### 📐 Geometry Operations
+
+#### Lấy danh sách hình học
+```
+GET /api/geometry/shapes
+```
+**Response:**
+```json
+{
+  "status": "success",
+  "data": ["Điểm", "Đường thẳng", "Mặt phẳng", "Đường tròn", "Mặt cầu"]
+}
+```
+
+#### Lấy danh sách phép toán
+```
+GET /api/geometry/operations
+```
+**Response:**
+```json
+{
+  "status": "success",
+  "data": ["Tương giao", "Khoảng cách", "Diện tích", "Thể tích", "PT đường thẳng"]
+}
+```
+
+#### Lấy hình học phù hợp cho phép toán
+```
+GET /api/geometry/operations/{operation}/shapes
+```
+**Ví dụ:**
+```
+GET /api/geometry/operations/Khoảng cách/shapes
+```
+
+### 🔢 Processing
+
+#### Xử lý tính toán đơn lẻ
+```
+POST /api/geometry/process
+```
+
+**Request Body:**
+```json
+{
   "operation": "Khoảng cách",
-  "shape_a": "Điểm", 
-  "shape_b": "Điểm",
-  "dimension_a": "3",
-  "dimension_b": "3",
-  "calculator_version": "fx799",
-  "point_a": {"coordinates": "1,2,3"},
-  "point_b": {"coordinates": "4,5,6"}
-}'
+  "shape_A": "Điểm", 
+  "data_A": {
+    "point_input": "1,2,3"
+  },
+  "shape_B": "Điểm",
+  "data_B": {
+    "point_input": "4,5,6"
+  },
+  "dimension_A": "3",
+  "dimension_B": "3",
+  "version": "fx799"
+}
 ```
 
-## 🚀 Deployment
+**Response:**
+```json
+{
+  "status": "success",
+  "data": {
+    "operation": "Khoảng cách",
+    "shape_A": "Điểm",
+    "shape_B": "Điểm", 
+    "keylog": "wj1131=2=3=CqT11T1224=5=6=CqT3T1RT2=",
+    "encoded_A": ["1", "2", "3"],
+    "encoded_B": ["4", "5", "6"],
+    "timestamp": "2024-11-04T09:00:00"
+  }
+}
+```
 
-### Production với Docker
+#### Xử lý batch
+```
+POST /api/geometry/batch
+```
 
+**Request Body:**
+```json
+{
+  "calculations": [
+    {
+      "operation": "Diện tích",
+      "shape_A": "Đường tròn",
+      "data_A": {
+        "circle_center": "0,0",
+        "circle_radius": "5"
+      },
+      "version": "fx799"
+    },
+    {
+      "operation": "Thể tích", 
+      "shape_A": "Mặt cầu",
+      "data_A": {
+        "sphere_center": "0,0,0",
+        "sphere_radius": "3"
+      }
+    }
+  ]
+}
+```
+
+### 📝 Templates và Validation
+
+#### Lấy template đầu vào
+```
+GET /api/geometry/template/{shape_A}
+GET /api/geometry/template/{shape_A}/{shape_B}
+```
+
+#### Validate dữ liệu đầu vào
+```
+POST /api/geometry/validate
+```
+
+## Ví dụ sử dụng
+
+### JavaScript/Web Integration
+
+```javascript
+// Tính khoảng cách giữa 2 điểm
+const response = await fetch('http://localhost:5000/api/geometry/process', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    operation: 'Khoảng cách',
+    shape_A: 'Điểm',
+    data_A: { point_input: '1,2,3' },
+    shape_B: 'Điểm', 
+    data_B: { point_input: '4,5,6' },
+    dimension_A: '3',
+    dimension_B: '3'
+  })
+});
+
+const result = await response.json();
+console.log('Keylog:', result.data.keylog);
+```
+
+### Python Integration
+
+```python
+import requests
+
+# Tính diện tích đường tròn
+data = {
+    "operation": "Diện tích",
+    "shape_A": "Đường tròn",
+    "data_A": {
+        "circle_center": "0,0",
+        "circle_radius": "sqrt(5)"
+    },
+    "version": "fx799"
+}
+
+response = requests.post('http://localhost:5000/api/geometry/process', json=data)
+result = response.json()
+
+print(f"Keylog: {result['data']['keylog']}")
+# Output: wj410=0=s5)=CqT4T1=
+```
+
+## Cấu trúc dữ liệu đầu vào
+
+### Điểm
+```json
+{
+  "point_input": "x,y,z"  // 2D: "x,y", 3D: "x,y,z"
+}
+```
+
+### Đường thẳng
+```json
+{
+  "line_A1": "x0,y0,z0",  // Điểm trên đường thẳng
+  "line_X1": "dx,dy,dz"   // Vector chỉ phương
+}
+```
+
+### Mặt phẳng
+```json
+{
+  "plane_a": "a",  // Hệ số x
+  "plane_b": "b",  // Hệ số y  
+  "plane_c": "c",  // Hệ số z
+  "plane_d": "d"   // Hằng số
+}
+```
+
+### Đường tròn
+```json
+{
+  "circle_center": "x,y",  // Tâm đường tròn
+  "circle_radius": "r"     // Bán kính
+}
+```
+
+### Mặt cầu
+```json
+{
+  "sphere_center": "x,y,z",  // Tâm mặt cầu
+  "sphere_radius": "r"       // Bán kính
+}
+```
+
+## Hỗ trợ LaTeX
+
+API hỗ trợ chuyển đổi biểu thức LaTeX phổ biến:
+
+- `sqrt{5}` → `s5)`
+- `\\frac{1}{2}` → `1a2`
+- `sin(x)` → `j(x`
+- `cos(x)` → `k(x`
+- `ln(x)` → `h(x`
+- `-` → `p`
+
+## Error Handling
+
+API trả về các mã lỗi HTTP chuẩn:
+
+- `200`: Success
+- `400`: Bad Request (dữ liệu đầu vào không hợp lệ)
+- `404`: Not Found (endpoint không tồn tại)
+- `500`: Internal Server Error
+
+**Ví dụ error response:**
+```json
+{
+  "status": "error",
+  "message": "Missing required field: operation"
+}
+```
+
+## Production Deployment
+
+### Với Gunicorn
 ```bash
-# Build production image
-docker build -t geometry-api:latest .
-
-# Run production container
-docker run -d \
-  --name geometry-api \
-  -p 8000:8000 \
-  -v ./uploads:/app/uploads \
-  -v ./outputs:/app/outputs \
-  geometry-api:latest
+pip install gunicorn
+gunicorn -w 4 -b 0.0.0.0:5000 app:app
 ```
 
-### Cloud Deployment
+### Với Docker
+```dockerfile
+FROM python:3.9-slim
+WORKDIR /app
+COPY requirements.txt .
+RUN pip install -r requirements.txt
+COPY . .
+EXPOSE 5000
+CMD ["gunicorn", "-w", "4", "-b", "0.0.0.0:5000", "app:app"]
+```
 
-- **Heroku**: Sử dụng `Procfile`
-- **Railway**: Auto-deploy từ GitHub
-- **Vercel**: Serverless functions
-- **AWS/GCP**: Docker containers
+## Tích hợp với Web Frontend
 
-## 📊 Performance
+API được thiết kế để tích hợp dễ dàng với:
 
-- **Response time**: < 100ms cho tính toán đơn giản
-- **File processing**: 1000+ rows/second
-- **Memory usage**: < 100MB cho operations thông thường
-- **Concurrent requests**: Hỗ trợ 100+ requests/second
+- ✅ **React/Vue.js/Angular** - Modern SPA frameworks
+- ✅ **jQuery** - Traditional web development
+- ✅ **Mobile Apps** - React Native, Flutter
+- ✅ **Desktop Apps** - Electron, Tauri
 
-## 🤝 Contributing
+## Phát triển và đóng góp
 
 1. Fork repository
-2. Tạo feature branch: `git checkout -b feature/amazing-feature`
-3. Commit changes: `git commit -m 'Add amazing feature'`
-4. Push to branch: `git push origin feature/amazing-feature`
+2. Tạo feature branch: `git checkout -b feature/new-feature`
+3. Commit changes: `git commit -m 'Add new feature'`
+4. Push to branch: `git push origin feature/new-feature`
 5. Tạo Pull Request
 
-## 📄 License
+## License
 
-MIT License - xem [LICENSE](LICENSE) file để biết thêm chi tiết.
+MIT License - Xem [LICENSE](LICENSE) để biết chi tiết.
 
-## 🔗 Related Projects
+## Liên hệ
 
-- [singed2905/clone](https://github.com/singed2905/clone) - Original desktop application
-- [Geometry Mode Documentation](docs/) - Detailed technical documentation
-
-## 📞 Support
-
-- **Issues**: [GitHub Issues](https://github.com/singed2905/api/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/singed2905/api/discussions)
-- **Email**: support@geometryapi.com
+- **Author**: singed2905
+- **Repository**: https://github.com/singed2905/apiTL
+- **Original App**: https://github.com/singed2905/ConvertKeylogApp
 
 ---
 
-**Made with ❤️ by [Đặng Vũ Hưng](https://github.com/singed2905)**
+*Được chuyển đổi từ [ConvertKeylogApp](https://github.com/singed2905/ConvertKeylogApp) - Desktop app cho việc chuyển đổi biểu thức toán học sang keylog máy tính Casio.*
