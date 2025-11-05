@@ -1,0 +1,46 @@
+# Core web framework
+fastapi>=0.104.0
+uvicorn[standard]>=0.24.0
+python-multipart>=0.0.6
+aiofiles>=23.2.0
+
+# Data processing (từ project cũ)
+pandas>=1.5.0
+openpyxl>=3.0.0
+numpy>=1.20.0
+
+# System monitoring
+psutil>=5.8.0
+
+# Data validation
+pydantic>=2.4.0
+pydantic-settings>=2.0.0
+
+# Optional: Authentication & Security
+python-jose[cryptography]>=3.3.0
+passlib[bcrypt]>=1.7.4
+
+# Optional: Caching
+redis>=5.0.0
+
+# Development & Testing  
+pytest>=7.0.0
+pytest-asyncio>=0.21.0
+httpx>=0.25.0
+black>=23.0.0
+flake8>=6.0.0
+
+# Production deployment
+gunicorn>=21.0.0
+
+# Logging
+loguru>=0.7.0
+
+# File handling
+python-magic>=0.4.27
+
+# Date/time utilities
+python-dateutil>=2.8.2
+
+# JSON handling
+orjson>=3.9.0
